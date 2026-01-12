@@ -238,6 +238,101 @@ class ReadingService:
 
         return reading
 
+    async def create_palm_reading(
+        self,
+        user: User,
+        hand_image_url: str,
+        hand_type: str = "right"
+    ) -> Reading:
+        """
+        Create a palm (hand) reading
+
+        Args:
+            user: Authenticated user
+            hand_image_url: URL of uploaded hand image
+            hand_type: Type of hand (left or right)
+
+        Returns:
+            Created reading with AI-generated interpretation
+        """
+        logger.info(f"Creating palm reading for user {user.id} ({hand_type} hand)")
+
+        # Step 1: Analyze hand image with Vision AI
+        try:
+            palm_data = await self.vision_service.detect_palm_lines(
+                image_url=hand_image_url,
+                hand_type=hand_type
+            )
+        except Exception as e:
+            logger.error(f"Palm detection failed: {str(e)}")
+            # Continue with empty palm data
+            palm_data = {}
+
+        logger.info(f"Palm features detected: {len(palm_data.get('lines', []))} lines")
+
+        # Step 2: Get user context
+        zodiac_sign = user.zodiac_sign or "Unknown"
+        recent_readings_summary = self._get_recent_readings_summary(user)
+        moon_phase = self._get_current_moon_phase()
+
+        # Step 3: Generate reading with AI
+        reading_text, processing_time = await self.ai_service.generate_palm_reading(
+            user_name=user.name,
+            zodiac_sign=zodiac_sign,
+            palm_data=palm_data,
+            hand_type=hand_type,
+            language=user.language.value,
+            moon_phase=moon_phase,
+            recent_readings=recent_readings_summary
+        )
+
+        # Step 4: Save to database
+        reading = Reading(
+            user_id=user.id,
+            type=ReadingType.PALM,
+            input_data={
+                "hand_type": hand_type,
+                "moon_phase": moon_phase,
+                "zodiac_sign": zodiac_sign
+            },
+            ai_response=reading_text,
+            symbols_detected=palm_data,  # Store palm features as "symbols"
+            processing_time_ms=processing_time,
+        )
+
+        self.db.add(reading)
+        self.db.commit()
+        self.db.refresh(reading)
+
+        # Step 5: Save image reference
+        reading_image = ReadingImage(
+            reading_id=reading.id,
+            image_url=hand_image_url,
+            image_type=hand_type,  # "left" or "right"
+        )
+        self.db.add(reading_image)
+        self.db.commit()
+
+        # Step 6: Update subscription usage counter
+        user.subscription.readings_this_month += 1
+        self.db.commit()
+
+        # Step 7: Update user stats (gamification)
+        if user.stats:
+            user.stats.total_readings += 1
+            user.stats.palm_readings += 1
+            user.stats.add_karma(25)  # 25 karma points for reading
+
+            # Unlock badge if first palm reading
+            if user.stats.palm_readings == 1:
+                user.stats.unlock_badge("palm_reader")
+
+            self.db.commit()
+
+        logger.info(f"Palm reading {reading.id} created successfully")
+
+        return reading
+
     def get_reading_by_id(self, reading_id: int, user: User) -> Optional[Reading]:
         """
         Get a reading by ID (must belong to user)

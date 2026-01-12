@@ -10,6 +10,7 @@ import time
 from app.config import settings
 from app.ai.prompts.coffee_reading import get_coffee_reading_prompt
 from app.ai.prompts.tarot_reading import get_tarot_reading_prompt, get_simple_tarot_prompt
+from app.ai.prompts.palm_reading import get_palm_reading_prompt, get_simple_palm_prompt
 from app.ai.tarot_spreads import format_spread_for_ai, get_spread, SpreadType
 
 logger = logging.getLogger(__name__)
@@ -192,7 +193,9 @@ class AIService:
         zodiac_sign: str,
         palm_data: Dict[str, Any],
         hand_type: str,
-        language: str = "en"
+        language: str = "en",
+        moon_phase: str = "Waxing Crescent",
+        recent_readings: str = "This is the user's first palm reading."
     ) -> tuple[str, int]:
         """
         Generate palmistry reading
@@ -200,17 +203,43 @@ class AIService:
         Args:
             user_name: User's name
             zodiac_sign: User's zodiac sign
-            palm_data: Detected palm lines and features
+            palm_data: Detected palm lines and features from Vision API
             hand_type: Type of hand (left, right)
             language: Output language
+            moon_phase: Current moon phase
+            recent_readings: Summary of recent readings
 
         Returns:
             Tuple of (reading_text, processing_time_ms)
         """
         start_time = time.time()
 
-        # TODO: Implement palm reading prompt
-        prompt = f"Generate a palmistry reading for {user_name}..."
+        logger.info(f"Generating palm reading for {user_name} ({hand_type} hand)")
+
+        # Check if we have detailed palm data
+        has_detailed_data = bool(palm_data.get("lines")) or bool(palm_data.get("hand_shape"))
+
+        if has_detailed_data:
+            # Use comprehensive prompt with detailed analysis
+            prompt = get_palm_reading_prompt(
+                user_name=user_name,
+                zodiac_sign=zodiac_sign,
+                palm_features=palm_data,
+                hand_type=hand_type,
+                language=language,
+                moon_phase=moon_phase,
+                recent_readings_summary=recent_readings
+            )
+            max_tokens = 1500
+        else:
+            # Use simplified prompt when detailed features aren't available
+            prompt = get_simple_palm_prompt(
+                user_name=user_name,
+                hand_type=hand_type,
+                palm_features=palm_data,
+                language=language
+            )
+            max_tokens = 800
 
         try:
             response = await self.client.chat.completions.create(
@@ -218,19 +247,21 @@ class AIService:
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are a palmistry expert."
+                        "content": "You are Mystic.ai's Master Palmist, an expert in Chiromancy with deep knowledge of hand analysis and palm reading traditions worldwide."
                     },
                     {
                         "role": "user",
                         "content": prompt
                     }
                 ],
-                temperature=0.7,
-                max_tokens=1200,
+                temperature=0.7,  # Balanced between consistency and creativity
+                max_tokens=max_tokens,
             )
 
             reading_text = response.choices[0].message.content
             processing_time = int((time.time() - start_time) * 1000)
+
+            logger.info(f"Palm reading generated: {len(reading_text)} chars in {processing_time}ms")
 
             return reading_text, processing_time
 

@@ -150,33 +150,92 @@ Be thorough but only include symbols you can clearly see. If you see very few or
 
     def _get_palm_detection_prompt(self, hand_type: str) -> str:
         """Get prompt for palm line detection"""
-        return f"""You are a palmistry expert. Analyze this {hand_type} hand image.
+        return f"""You are a palmistry expert. Analyze this {hand_type} hand image comprehensively.
 
-Identify the major palm lines:
-1. Life Line: Curves around the thumb base
-2. Heart Line: Runs horizontally across the top of the palm
-3. Head Line: Runs horizontally across the middle of the palm
-4. Fate Line: Runs vertically up the palm (if present)
+**MAJOR PALM LINES:**
+1. **Life Line**: Curves around thumb base (vitality, life energy)
+2. **Heart Line**: Horizontal across top palm (emotions, relationships)
+3. **Head Line**: Horizontal across middle palm (intellect, thinking)
+4. **Fate Line**: Vertical up palm center (career, life path) - may be absent
 
-For each line, describe:
+For each line detected, describe:
 - length: short, medium, long
 - depth: faint, medium, deep
-- quality: broken, chained, clear, forked
-- special_features: any breaks, islands, or branches
+- quality: clear, broken, chained, forked, islanded
+- characteristics: List notable features (e.g., "deep and clear", "curves upward", "breaks near center")
 
-Also identify:
-- hand_shape: square, rectangular (determines element)
-- finger_length: short, medium, long (relative to palm)
+**HAND SHAPE TYPE:**
+Determine the hand element type:
+- **Earth Hand**: Square palm + short fingers (practical, grounded)
+- **Air Hand**: Square palm + long fingers (intellectual, communicative)
+- **Fire Hand**: Rectangular palm + short fingers (energetic, passionate)
+- **Water Hand**: Rectangular palm + long fingers (emotional, intuitive)
 
-Return your response in this JSON format:
+**FINGER ANALYSIS:**
+Relative lengths compared to each other:
+- Index finger (Jupiter): leadership, ambition
+- Middle finger (Saturn): responsibility, balance
+- Ring finger (Apollo): creativity, expression
+- Pinky finger (Mercury): communication, intelligence
+
+Describe as: "Index slightly longer than ring" or "All fingers balanced"
+
+**PALM MOUNTS:** (if visible as elevated areas)
+Note prominence of these areas:
+- Venus (base of thumb): love, passion
+- Jupiter (below index): ambition, confidence
+- Saturn (below middle): wisdom, discipline
+- Apollo (below ring): creativity, success
+- Mercury (below pinky): communication
+- Upper Mars (below Mercury): mental resilience
+- Lower Mars (above Venus): physical courage
+- Moon (opposite thumb): imagination, intuition
+
+Return comprehensive JSON:
 {{
-  "life_line": {{"length": "long", "depth": "deep", "quality": "clear", "special_features": []}},
-  "heart_line": {{"length": "long", "depth": "medium", "quality": "clear", "special_features": ["curves_upward"]}},
-  "head_line": {{"length": "medium", "depth": "deep", "quality": "clear", "special_features": []}},
-  "fate_line": {{"present": true, "length": "long", "depth": "faint", "quality": "broken"}},
-  "hand_shape": "square",
-  "finger_length": "medium"
-}}"""
+  "hand_shape": "Earth Hand",
+  "palm_type": "square",
+  "finger_length_overall": "short relative to palm",
+  "lines": [
+    {{
+      "name": "Heart Line",
+      "present": true,
+      "characteristics": ["long", "deep", "curves upward toward index", "clear and unbroken"]
+    }},
+    {{
+      "name": "Head Line",
+      "present": true,
+      "characteristics": ["medium length", "straight", "deep", "separate start from life line"]
+    }},
+    {{
+      "name": "Life Line",
+      "present": true,
+      "characteristics": ["long and sweeping", "deep", "clear", "wide curve"]
+    }},
+    {{
+      "name": "Fate Line",
+      "present": false,
+      "characteristics": []
+    }}
+  ],
+  "fingers": {{
+    "index": {{"relative_length": "Average"}},
+    "middle": {{"relative_length": "Longest"}},
+    "ring": {{"relative_length": "Slightly shorter than index"}},
+    "pinky": {{"relative_length": "Short"}}
+  }},
+  "mounts": {{
+    "Venus": "Prominent",
+    "Jupiter": "Average",
+    "Saturn": "Flat",
+    "Apollo": "Slightly prominent",
+    "Mercury": "Average",
+    "Moon": "Well-developed"
+  }},
+  "overall_impression": "Strong, practical hand with good vitality and emotional depth"
+}}
+
+Analyze the image carefully and provide as much detail as visible."""
 
     def _parse_symbols_from_response(self, content: str) -> List[Dict[str, Any]]:
         """Parse symbols from Vision API response"""
