@@ -19,18 +19,26 @@ class CoffeeReadingCreate(BaseModel):
 
 
 # Tarot Reading Schemas
-class TarotCard(BaseModel):
-    """Single tarot card"""
-    name: str
-    position: int
-    reversed: bool = False
-
-
 class TarotReadingCreate(BaseModel):
     """Schema for creating a tarot reading"""
-    spread_type: str = Field(..., regex="^(single|three_card|celtic_cross|relationship|career)$")
-    cards: List[TarotCard]
-    question: Optional[str] = None
+    spread_type: str = Field(
+        default="three_card",
+        pattern="^(single_card|three_card|celtic_cross|horseshoe|relationship|career)$",
+        description="Type of tarot spread to use"
+    )
+    question: Optional[str] = Field(
+        default=None,
+        max_length=500,
+        description="Your question or focus for the reading"
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "spread_type": "three_card",
+                "question": "What do I need to know about my career path?"
+            }
+        }
 
 
 # Palm Reading Schemas

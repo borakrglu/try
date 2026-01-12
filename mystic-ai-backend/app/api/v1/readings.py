@@ -11,6 +11,7 @@ from app.models.user import User
 from app.models.reading import ReadingType
 from app.schemas.reading import (
     CoffeeReadingCreate,
+    TarotReadingCreate,
     ReadingResponse,
     ReadingListResponse,
     ReadingFeedback
@@ -64,6 +65,55 @@ async def create_coffee_reading(
     reading = await reading_service.create_coffee_reading(
         user=current_user,
         image_urls=image_urls
+    )
+
+    return ReadingResponse.from_orm(reading)
+
+
+@router.post("/tarot", response_model=ReadingResponse, status_code=status.HTTP_201_CREATED)
+async def create_tarot_reading(
+    reading_data: TarotReadingCreate,
+    current_user: User = Depends(check_reading_limit),
+    db: Session = Depends(get_db)
+):
+    """
+    Create a tarot card reading
+
+    **Requires:** Premium or free tier with readings available (3/month)
+
+    **Process:**
+    1. Choose your spread type (single card, three card, Celtic Cross, etc.)
+    2. Optionally provide a question or focus area
+    3. AI draws random cards and generates personalized reading
+    4. Reading is saved to your library
+
+    **Spread Types:**
+    - `single_card`: Quick daily guidance (1 card)
+    - `three_card`: Past-Present-Future spread (3 cards)
+    - `celtic_cross`: Comprehensive 10-card spread
+    - `horseshoe`: Balanced 7-card guidance
+    - `relationship`: 7-card relationship insight
+    - `career`: 5-card career guidance
+
+    **Returns:** Complete tarot reading with drawn cards and interpretation
+
+    **Time:** ~10-15 seconds
+
+    **Example:**
+    ```json
+    {
+      "spread_type": "three_card",
+      "question": "What should I focus on this week?"
+    }
+    ```
+    """
+    reading_service = ReadingService(db)
+
+    # Create tarot reading (cards drawn automatically)
+    reading = await reading_service.create_tarot_reading(
+        user=current_user,
+        spread_type=reading_data.spread_type,
+        question=reading_data.question
     )
 
     return ReadingResponse.from_orm(reading)

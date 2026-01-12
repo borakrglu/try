@@ -9,6 +9,8 @@ import time
 
 from app.config import settings
 from app.ai.prompts.coffee_reading import get_coffee_reading_prompt
+from app.ai.prompts.tarot_reading import get_tarot_reading_prompt, get_simple_tarot_prompt
+from app.ai.tarot_spreads import format_spread_for_ai, get_spread, SpreadType
 
 logger = logging.getLogger(__name__)
 
@@ -91,7 +93,9 @@ class AIService:
         cards: List[Dict[str, Any]],
         spread_type: str,
         question: Optional[str] = None,
-        language: str = "en"
+        language: str = "en",
+        moon_phase: str = "Waxing Crescent",
+        recent_readings: str = "This is the user's first tarot reading."
     ) -> tuple[str, int]:
         """
         Generate tarot card reading
@@ -103,14 +107,56 @@ class AIService:
             spread_type: Type of spread (single, three_card, celtic_cross, etc.)
             question: Optional user question
             language: Output language
+            moon_phase: Current moon phase
+            recent_readings: Summary of recent readings
 
         Returns:
             Tuple of (reading_text, processing_time_ms)
         """
         start_time = time.time()
 
-        # TODO: Implement tarot reading prompt
-        prompt = f"Generate a tarot reading for {user_name}..."
+        # Convert spread_type string to enum if needed
+        try:
+            spread_enum = SpreadType(spread_type.lower())
+        except ValueError:
+            spread_enum = SpreadType.THREE_CARD  # Default fallback
+
+        # Get spread information
+        spread = get_spread(spread_enum)
+
+        # Format cards for AI prompt
+        cards_formatted = format_spread_for_ai(spread_enum, cards)
+
+        # Use question or default based on spread
+        if not question:
+            question = f"General guidance using {spread.name}"
+
+        logger.info(f"Generating tarot reading for {user_name} ({spread.name}, {len(cards)} cards)")
+
+        # Choose prompt based on complexity
+        if len(cards) <= 3:
+            prompt = get_simple_tarot_prompt(
+                user_name=user_name,
+                cards_data=cards,
+                question=question,
+                language=language
+            )
+            max_tokens = 800
+        else:
+            # Get spread description for context
+            spread_info = f"{spread.name} - {spread.description}"
+
+            prompt = get_tarot_reading_prompt(
+                user_name=user_name,
+                zodiac_sign=zodiac_sign,
+                question=question,
+                spread_info=spread_info,
+                cards_formatted=cards_formatted,
+                language=language,
+                moon_phase=moon_phase,
+                recent_readings_summary=recent_readings
+            )
+            max_tokens = 1500
 
         try:
             response = await self.client.chat.completions.create(
@@ -118,19 +164,21 @@ class AIService:
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are an expert tarot reader."
+                        "content": "You are Mystic.ai's Master Tarot Reader, wise and intuitive, blending traditional tarot wisdom with modern psychological insight."
                     },
                     {
                         "role": "user",
                         "content": prompt
                     }
                 ],
-                temperature=0.8,
-                max_tokens=1500,
+                temperature=0.8,  # Creative and intuitive
+                max_tokens=max_tokens,
             )
 
             reading_text = response.choices[0].message.content
             processing_time = int((time.time() - start_time) * 1000)
+
+            logger.info(f"Tarot reading generated: {len(reading_text)} chars in {processing_time}ms")
 
             return reading_text, processing_time
 

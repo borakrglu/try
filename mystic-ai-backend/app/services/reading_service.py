@@ -12,6 +12,8 @@ from app.models.user import User
 from app.schemas.reading import ReadingResponse
 from app.ai.vision_service import VisionService
 from app.ai.ai_service import AIService
+from app.ai.tarot_cards import get_random_cards
+from app.ai.tarot_spreads import SpreadType
 
 logger = logging.getLogger(__name__)
 
@@ -122,6 +124,117 @@ class ReadingService:
             self.db.commit()
 
         logger.info(f"Coffee reading {reading.id} created successfully")
+
+        return reading
+
+    async def create_tarot_reading(
+        self,
+        user: User,
+        spread_type: str = "three_card",
+        question: Optional[str] = None
+    ) -> Reading:
+        """
+        Create a tarot card reading
+
+        Args:
+            user: Authenticated user
+            spread_type: Type of spread (single_card, three_card, celtic_cross, etc.)
+            question: Optional question or focus for the reading
+
+        Returns:
+            Created reading with AI-generated interpretation
+        """
+        logger.info(f"Creating tarot reading for user {user.id} ({spread_type})")
+
+        # Step 1: Draw random cards based on spread type
+        spread_enum = SpreadType(spread_type.lower())
+
+        # Determine number of cards needed
+        card_counts = {
+            SpreadType.SINGLE_CARD: 1,
+            SpreadType.THREE_CARD: 3,
+            SpreadType.CELTIC_CROSS: 10,
+            SpreadType.HORSESHOE: 7,
+            SpreadType.RELATIONSHIP: 7,
+            SpreadType.CAREER: 5
+        }
+
+        card_count = card_counts.get(spread_enum, 3)
+
+        # Draw random cards
+        drawn_cards = get_random_cards(count=card_count, allow_duplicates=False)
+
+        # Convert cards to dict format for AI
+        cards_data = []
+        for card, is_reversed in drawn_cards:
+            cards_data.append(card.to_dict(reversed=is_reversed))
+
+        # Step 2: Get user context
+        zodiac_sign = user.zodiac_sign or "Unknown"
+        recent_readings_summary = self._get_recent_readings_summary(user)
+        moon_phase = self._get_current_moon_phase()
+
+        # Step 3: Generate reading with AI
+        reading_text, processing_time = await self.ai_service.generate_tarot_reading(
+            user_name=user.name,
+            zodiac_sign=zodiac_sign,
+            cards=cards_data,
+            spread_type=spread_type,
+            question=question,
+            language=user.language.value,
+            moon_phase=moon_phase,
+            recent_readings=recent_readings_summary
+        )
+
+        # Step 4: Prepare cards info for storage
+        cards_info = []
+        for i, (card, is_reversed) in enumerate(drawn_cards):
+            cards_info.append({
+                "position": i + 1,
+                "card_number": card.number,
+                "card_name": card.name,
+                "suit": card.suit.value,
+                "reversed": is_reversed,
+                "keywords": card.reversed_keywords if is_reversed else card.upright_keywords,
+                "meaning": card.reversed_meaning if is_reversed else card.upright_meaning
+            })
+
+        # Step 5: Save to database
+        reading = Reading(
+            user_id=user.id,
+            type=ReadingType.TAROT,
+            input_data={
+                "spread_type": spread_type,
+                "question": question or "General guidance",
+                "moon_phase": moon_phase,
+                "zodiac_sign": zodiac_sign
+            },
+            ai_response=reading_text,
+            symbols_detected=cards_info,  # Store cards as "symbols"
+            processing_time_ms=processing_time,
+        )
+
+        self.db.add(reading)
+        self.db.commit()
+        self.db.refresh(reading)
+
+        # Step 6: Update subscription usage counter
+        user.subscription.readings_this_month += 1
+        self.db.commit()
+
+        # Step 7: Update user stats (gamification)
+        if user.stats:
+            user.stats.total_readings += 1
+            user.stats.tarot_readings += 1
+            user.stats.add_karma(25)  # 25 karma points for reading
+
+            # Unlock badge if first tarot reading
+            if user.stats.tarot_readings == 1:
+                user.stats.unlock_badge("tarot_mystic")
+
+            self.db.commit()
+
+        logger.info(f"Tarot reading {reading.id} created successfully")
 
         return reading
 
