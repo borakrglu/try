@@ -1,0 +1,151 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir şeyler yanlış gitti",
+    "retry": "Tekrar dene",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "done": "Tamam",
+    "next": "İleri",
+    "back": "Geri",
+    "skip": "Geç",
+    "yes": "Evet",
+    "no": "Hayır"
+  },
+
+  "auth": {
+    "signIn": "Giriş Yap",
+    "signUp": "Kayıt Ol",
+    "signOut": "Çıkış Yap",
+    "email": "E-posta",
+    "password": "Şifre",
+    "name": "İsim",
+    "birthDate": "Doğum Tarihi",
+    "emailPlaceholder": "E-posta adresinizi girin",
+    "passwordPlaceholder": "Şifrenizi girin",
+    "namePlaceholder": "Size nasıl hitap edelim?",
+    "forgotPassword": "Şifremi unuttum?",
+    "dontHaveAccount": "Hesabınız yok mu?",
+    "alreadyHaveAccount": "Zaten hesabınız var mı?",
+    "signInWithGoogle": "Google ile giriş yap",
+    "signInWithApple": "Apple ile giriş yap",
+    "orContinueWith": "veya şununla devam et"
+  },
+
+  "onboarding": {
+    "welcome": "Mystic.ai'ye Hoş Geldiniz",
+    "subtitle": "Yapay Zeka Destekli Mistik Rehberiniz",
+    "feature1": "AI Destekli Fallar",
+    "feature1Desc": "Kahve, Tarot, El falı Vision AI ile",
+    "feature2": "Mistik Sohbet",
+    "feature2Desc": "Bilge, Cadı veya Astrolog ile konuş",
+    "feature3": "Akıllı Günlük",
+    "feature3Desc": "Ruh halinizi ve enerjinizi AI ile takip edin",
+    "getStarted": "Başlayın",
+    "whatsYourName": "Size nasıl hitap edelim?",
+    "whenWereBorn": "Ne zaman doğdunuz?",
+    "selectLanguage": "Dilinizi seçin"
+  },
+
+  "home": {
+    "goodMorning": "Günaydın, {{name}}",
+    "goodAfternoon": "İyi günler, {{name}}",
+    "goodEvening": "İyi akşamlar, {{name}}",
+    "goodNight": "İyi geceler, {{name}}",
+    "dailyEnergy": "Bugünün Enerjisi",
+    "quickActions": "Hızlı İşlemler",
+    "exploreDestiny": "Ne öğrenmek istersiniz?"
+  },
+
+  "readings": {
+    "coffee": {
+      "title": "Kahve Falı",
+      "description": "Kahve fincanınızın fotoğraflarını yükleyin",
+      "instruction1": "Fincanınızın içini fotoğraflayın",
+      "instruction2": "Tabağı fotoğraflayın",
+      "instruction3": "Yan görünümü fotoğraflayın",
+      "processing": "Falınız bakılıyor...",
+      "readingReady": "Falınız hazır!",
+      "tapToSee": "Kahve telvenin ne söylediğini görmek için dokunun"
+    },
+    "tarot": {
+      "title": "Tarot Falı",
+      "description": "Kart çekin ve mistik rehberlik alın",
+      "selectSpread": "Bir düzen seçin",
+      "singleCard": "Tek Kart",
+      "threeCard": "Üç Kart",
+      "celticCross": "Kelt Haçı",
+      "shufflePrompt": "Kartları karıştırın ve sorunuza odaklanın",
+      "selectCards": "{{count}} kart seçin",
+      "revealing": "Kartlarınız açılıyor..."
+    },
+    "palm": {
+      "title": "El Falı",
+      "description": "Palmistry ile kaderinizi keşfedin",
+      "instruction": "Açık avucunuzun fotoğrafını çekin",
+      "analyzing": "El çizgileriniz analiz ediliyor...",
+      "leftHand": "Sol El (Geçmiş)",
+      "rightHand": "Sağ El (Gelecek)"
+    },
+    "viewAll": "Tüm Falları Görüntüle",
+    "shareReading": "Falı Paylaş",
+    "saveToLibrary": "Kütüphaneye Kaydet"
+  },
+
+  "chat": {
+    "title": "Mistik Sohbet",
+    "selectPersona": "Rehberinizi seçin",
+    "sage": "Bilge",
+    "sageDesc": "Stoacı bilgelik ve felsefe",
+    "witch": "Cadı",
+    "witchDesc": "Pratik büyü ve ritüeller",
+    "astrologer": "Astrolog",
+    "astrologerDesc": "Kozmik rehberlik ve geçişler",
+    "placeholder": "Sorunuzu sorun...",
+    "voiceInput": "Sesli giriş",
+    "thinking": "Düşünüyor..."
+  },
+
+  "journal": {
+    "title": "Günlük",
+    "newEntry": "Yeni Kayıt",
+    "howDoYouFeel": "Bugün kendinizi nasıl hissediyorsunuz?",
+    "writeYourThoughts": "Düşüncelerinizi yazın...",
+    "dreamJournal": "Rüya Günlüğü",
+    "todaysAffirmation": "Bugünün Olumlaması",
+    "moodCalendar": "Ruh Hali Takvimi",
+    "chakraBalance": "Çakra Dengesi",
+    "energyLevel": "Enerji Seviyesi",
+    "streakDays": "{{count}} gün serisi"
+  },
+
+  "subscription": {
+    "title": "Tam Potansiyelinizi Ortaya Çıkarın",
+    "freeTier": "Ücretsiz",
+    "weeklyTier": "Haftalık Premium",
+    "monthlyTier": "Aylık Premium",
+    "features": {
+      "unlimitedReadings": "Sınırsız fal",
+      "allPersonas": "Tüm sohbet kişilikleri",
+      "advancedInsights": "Gelişmiş içgörüler",
+      "noAds": "Reklamsız deneyim",
+      "prioritySupport": "Öncelikli destek"
+    },
+    "startTrial": "7 Günlük Ücretsiz Denemeyi Başlat",
+    "subscribe": "Hemen Abone Ol",
+    "currentPlan": "Mevcut Plan",
+    "restorePurchases": "Satın Alımları Geri Yükle",
+    "freeTrial": "7 gün ücretsiz, sonra {{price}}"
+  },
+
+  "errors": {
+    "network": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",
+    "uploadFailed": "Yükleme başarısız. Lütfen tekrar deneyin.",
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin.",
+    "passwordTooShort": "Şifre en az 8 karakter olmalıdır.",
+    "subscriptionFailed": "Abonelik başarısız. Lütfen tekrar deneyin."
+  }
+}

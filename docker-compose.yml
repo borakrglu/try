@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: mystic-postgres
+    environment:
+      POSTGRES_USER: mystic
+      POSTGRES_PASSWORD: mystic_dev_password
+      POSTGRES_DB: mystic_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mystic"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache & Queue
+  redis:
+    image: redis:7-alpine
+    container_name: mystic-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./mystic-ai-backend
+      dockerfile: Dockerfile
+    container_name: mystic-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://mystic:mystic_dev_password@postgres:5432/mystic_ai
+      - REDIS_URL=redis://redis:6379/0
+      - APP_ENV=development
+      - DEBUG=True
+    env_file:
+      - ./mystic-ai-backend/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./mystic-ai-backend/app:/app/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Celery Worker (Background Tasks)
+  celery-worker:
+    build:
+      context: ./mystic-ai-backend
+      dockerfile: Dockerfile
+    container_name: mystic-celery-worker
+    environment:
+      - DATABASE_URL=postgresql://mystic:mystic_dev_password@postgres:5432/mystic_ai
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    env_file:
+      - ./mystic-ai-backend/.env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./mystic-ai-backend/app:/app/app
+    command: celery -A app.workers.celery_app worker --loglevel=info
+
+  # Flower (Celery Monitoring)
+  flower:
+    build:
+      context: ./mystic-ai-backend
+      dockerfile: Dockerfile
+    container_name: mystic-flower
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    depends_on:
+      - redis
+      - celery-worker
+    command: celery -A app.workers.celery_app flower --port=5555
+
+volumes:
+  postgres_data:
+  redis_data:

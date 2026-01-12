@@ -1,0 +1,75 @@
+{
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Etwas ist schief gelaufen",
+    "retry": "Erneut versuchen",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "done": "Fertig",
+    "next": "Weiter",
+    "back": "Zurück",
+    "skip": "Überspringen",
+    "yes": "Ja",
+    "no": "Nein"
+  },
+
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "name": "Name",
+    "birthDate": "Geburtsdatum",
+    "emailPlaceholder": "E-Mail eingeben",
+    "passwordPlaceholder": "Passwort eingeben",
+    "namePlaceholder": "Wie sollen wir Sie nennen?",
+    "forgotPassword": "Passwort vergessen?",
+    "dontHaveAccount": "Noch kein Konto?",
+    "alreadyHaveAccount": "Bereits ein Konto?",
+    "signInWithGoogle": "Mit Google anmelden",
+    "signInWithApple": "Mit Apple anmelden",
+    "orContinueWith": "oder fortfahren mit"
+  },
+
+  "home": {
+    "goodMorning": "Guten Morgen, {{name}}",
+    "goodAfternoon": "Guten Tag, {{name}}",
+    "goodEvening": "Guten Abend, {{name}}",
+    "goodNight": "Gute Nacht, {{name}}",
+    "dailyEnergy": "Heutige Energie",
+    "quickActions": "Schnellaktionen",
+    "exploreDestiny": "Was möchten Sie wissen?"
+  },
+
+  "readings": {
+    "coffee": {
+      "title": "Kaffeesatzlesen",
+      "description": "Laden Sie Fotos Ihrer Kaffeetasse hoch",
+      "processing": "Das Orakel liest Ihre Tasse..."
+    },
+    "tarot": {
+      "title": "Tarot-Lesung",
+      "description": "Ziehen Sie Karten und erhalten Sie mystische Führung"
+    },
+    "palm": {
+      "title": "Handlesen",
+      "description": "Entdecken Sie Ihr Schicksal durch Handlesen"
+    }
+  },
+
+  "chat": {
+    "title": "Mystischer Chat",
+    "sage": "Der Weise",
+    "witch": "Die Hexe",
+    "astrologer": "Der Astrologe"
+  },
+
+  "subscription": {
+    "title": "Entfalten Sie Ihr volles Potenzial",
+    "startTrial": "7 Tage kostenlos testen"
+  }
+}

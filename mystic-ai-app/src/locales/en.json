@@ -1,0 +1,151 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "yes": "Yes",
+    "no": "No"
+  },
+
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "birthDate": "Birth Date",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "namePlaceholder": "What should we call you?",
+    "forgotPassword": "Forgot password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithApple": "Sign in with Apple",
+    "orContinueWith": "or continue with"
+  },
+
+  "onboarding": {
+    "welcome": "Welcome to Mystic.ai",
+    "subtitle": "Your AI Mystic Guide",
+    "feature1": "AI-Powered Readings",
+    "feature1Desc": "Coffee, Tarot, Palm readings with Vision AI",
+    "feature2": "Mystical Chat",
+    "feature2Desc": "Talk to The Sage, The Witch, or The Astrologer",
+    "feature3": "Smart Journal",
+    "feature3Desc": "Track your mood and energy with AI insights",
+    "getStarted": "Get Started",
+    "whatsYourName": "What should we call you?",
+    "whenWereBorn": "When were you born?",
+    "selectLanguage": "Select your language"
+  },
+
+  "home": {
+    "goodMorning": "Good morning, {{name}}",
+    "goodAfternoon": "Good afternoon, {{name}}",
+    "goodEvening": "Good evening, {{name}}",
+    "goodNight": "Good night, {{name}}",
+    "dailyEnergy": "Today's Energy",
+    "quickActions": "Quick Actions",
+    "exploreDestiny": "What would you like to know?"
+  },
+
+  "readings": {
+    "coffee": {
+      "title": "Coffee Cup Reading",
+      "description": "Upload photos of your coffee cup for fortune telling",
+      "instruction1": "Photograph the interior of your cup",
+      "instruction2": "Photograph the saucer",
+      "instruction3": "Photograph the side view",
+      "processing": "The Oracle is reading your cup...",
+      "readingReady": "Your fortune is ready!",
+      "tapToSee": "Tap to see what the coffee grounds reveal"
+    },
+    "tarot": {
+      "title": "Tarot Reading",
+      "description": "Draw cards and receive mystical guidance",
+      "selectSpread": "Select a spread",
+      "singleCard": "Single Card",
+      "threeCard": "Three Card",
+      "celticCross": "Celtic Cross",
+      "shufflePrompt": "Shuffle the cards and focus on your question",
+      "selectCards": "Select {{count}} cards",
+      "revealing": "Revealing your cards..."
+    },
+    "palm": {
+      "title": "Palm Reading",
+      "description": "Discover your destiny through palmistry",
+      "instruction": "Photograph your open palm",
+      "analyzing": "Analyzing your palm lines...",
+      "leftHand": "Left Hand (Past)",
+      "rightHand": "Right Hand (Future)"
+    },
+    "viewAll": "View All Readings",
+    "shareReading": "Share Reading",
+    "saveToLibrary": "Save to Library"
+  },
+
+  "chat": {
+    "title": "Mystical Chat",
+    "selectPersona": "Choose your guide",
+    "sage": "The Sage",
+    "sageDesc": "Stoic wisdom and philosophy",
+    "witch": "The Witch",
+    "witchDesc": "Practical magic and rituals",
+    "astrologer": "The Astrologer",
+    "astrologerDesc": "Cosmic guidance and transits",
+    "placeholder": "Ask your question...",
+    "voiceInput": "Voice input",
+    "thinking": "Thinking..."
+  },
+
+  "journal": {
+    "title": "Journal",
+    "newEntry": "New Entry",
+    "howDoYouFeel": "How do you feel today?",
+    "writeYourThoughts": "Write your thoughts...",
+    "dreamJournal": "Dream Journal",
+    "todaysAffirmation": "Today's Affirmation",
+    "moodCalendar": "Mood Calendar",
+    "chakraBalance": "Chakra Balance",
+    "energyLevel": "Energy Level",
+    "streakDays": "{{count}} day streak"
+  },
+
+  "subscription": {
+    "title": "Unlock Your Full Potential",
+    "freeTier": "Free",
+    "weeklyTier": "Weekly Premium",
+    "monthlyTier": "Monthly Premium",
+    "features": {
+      "unlimitedReadings": "Unlimited readings",
+      "allPersonas": "All chat personas",
+      "advancedInsights": "Advanced insights",
+      "noAds": "Ad-free experience",
+      "prioritySupport": "Priority support"
+    },
+    "startTrial": "Start 7-Day Free Trial",
+    "subscribe": "Subscribe Now",
+    "currentPlan": "Current Plan",
+    "restorePurchases": "Restore Purchases",
+    "freeTrial": "7 days free, then {{price}}"
+  },
+
+  "errors": {
+    "network": "Network error. Please check your connection.",
+    "uploadFailed": "Upload failed. Please try again.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordTooShort": "Password must be at least 8 characters.",
+    "subscriptionFailed": "Subscription failed. Please try again."
+  }
+}
