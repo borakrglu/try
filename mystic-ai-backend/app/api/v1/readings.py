@@ -12,6 +12,7 @@ from app.models.reading import ReadingType
 from app.schemas.reading import (
     CoffeeReadingCreate,
     TarotReadingCreate,
+    PalmReadingCreate,
     ReadingResponse,
     ReadingListResponse,
     ReadingFeedback
@@ -114,6 +115,58 @@ async def create_tarot_reading(
         user=current_user,
         spread_type=reading_data.spread_type,
         question=reading_data.question
+    )
+
+    return ReadingResponse.from_orm(reading)
+
+
+@router.post("/palm", response_model=ReadingResponse, status_code=status.HTTP_201_CREATED)
+async def create_palm_reading(
+    reading_data: PalmReadingCreate,
+    current_user: User = Depends(check_reading_limit),
+    db: Session = Depends(get_db)
+):
+    """
+    Create a palm reading (palmistry/chiromancy)
+
+    **Requires:** Premium or free tier with readings available (3/month)
+
+    **Process:**
+    1. Upload a clear photo of your palm (hand_image_url)
+    2. Specify which hand (left or right)
+    3. AI analyzes palm lines, hand shape, fingers, and mounts
+    4. AI generates personalized palm reading
+    5. Reading is saved to your library
+
+    **Hand Type Significance:**
+    - **Right hand** (dominant): Current life, conscious choices, what you've become
+    - **Left hand** (non-dominant): Potential, inherited traits, subconscious patterns
+
+    **What AI Analyzes:**
+    - Major lines: Life, Heart, Head, Fate
+    - Hand shape: Earth, Air, Fire, or Water hand
+    - Finger proportions and meanings
+    - Palm mounts: Venus, Jupiter, Mars, Moon, etc.
+
+    **Returns:** Complete palm reading with line interpretations
+
+    **Time:** ~10-15 seconds
+
+    **Example:**
+    ```json
+    {
+      "hand_image_url": "https://...",
+      "hand_type": "right"
+    }
+    ```
+    """
+    reading_service = ReadingService(db)
+
+    # Create palm reading (AI analyzes the hand image)
+    reading = await reading_service.create_palm_reading(
+        user=current_user,
+        hand_image_url=str(reading_data.hand_image_url),
+        hand_type=reading_data.hand_type
     )
 
     return ReadingResponse.from_orm(reading)
@@ -224,11 +277,3 @@ def submit_reading_feedback(
         )
 
     return ReadingResponse.from_orm(reading)
-
-
-# TODO: Add tarot and palm reading endpoints
-# @router.post("/tarot", response_model=ReadingResponse)
-# async def create_tarot_reading(...)
-#
-# @router.post("/palm", response_model=ReadingResponse)
-# async def create_palm_reading(...)
