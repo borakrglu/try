@@ -61,6 +61,11 @@ class Settings(BaseSettings):
 
     # RevenueCat
     REVENUECAT_SECRET_KEY: str = ""
+    REVENUECAT_WEBHOOK_SECRET: str = ""  # For webhook signature verification
+
+    # Stripe (optional)
+    STRIPE_SECRET_KEY: str = ""
+    STRIPE_WEBHOOK_SECRET: str = ""
 
     # Sentry
     SENTRY_DSN: str = ""
