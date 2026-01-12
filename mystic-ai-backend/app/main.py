@@ -129,13 +129,15 @@ async def internal_error_handler(request: Request, exc):
     )
 
 
-# TODO: Include API routers
-# from app.api.v1 import auth, readings, chat, journal, payments
-# app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
-# app.include_router(readings.router, prefix="/api/v1/readings", tags=["readings"])
-# app.include_router(chat.router, prefix="/api/v1/chat", tags=["chat"])
-# app.include_router(journal.router, prefix="/api/v1/journal", tags=["journal"])
-# app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
+# Include API routers
+from app.api.v1 import auth
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
+
+# TODO: Add more routers as they're implemented
+# app.include_router(readings.router, prefix="/api/v1/readings", tags=["Readings"])
+# app.include_router(chat.router, prefix="/api/v1/chat", tags=["Chat"])
+# app.include_router(journal.router, prefix="/api/v1/journal", tags=["Journal"])
+# app.include_router(payments.router, prefix="/api/v1/payments", tags=["Payments"])
 
 
 if __name__ == "__main__":
