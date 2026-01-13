@@ -17,6 +17,7 @@ from app.schemas.chat import ChatMessageCreate, ChatMessageResponse, ChatHistory
 from app.config import settings
 from app.ai.prompts.chat_personas import get_persona_prompt, get_system_context
 from app.services.vector_memory import VectorMemoryService
+from app.services.moon_phase import MoonPhaseService
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +43,7 @@ class ChatService:
         self.db = db
         self.ai_client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
         self.vector_memory = VectorMemoryService()
+        self.moon_service = MoonPhaseService()
 
     async def send_message(
         self,
@@ -322,22 +324,16 @@ class ChatService:
 
     def _get_current_moon_phase(self) -> str:
         """
-        Get current moon phase
-
-        TODO: Integrate with real moon phase API
-        For now, returns a placeholder
+        Get current moon phase using MoonPhaseService
         """
-        return "Waxing Crescent"
+        moon_data = self.moon_service.get_current_phase()
+        return moon_data["phase_name"]
 
     def _get_current_transits(self) -> str:
         """
-        Get current astrological transits
-
-        TODO: Integrate with astrology API
-        For now, returns a placeholder
+        Get current astrological transits using MoonPhaseService
         """
-        now = datetime.utcnow()
-        return f"Moon in transition (as of {now.strftime('%B %d')}), Mercury direct, Venus harmonious"
+        return self.moon_service.get_astrological_transits()
 
     def _get_fallback_response(self, persona: PersonaType, user_name: str) -> str:
         """
