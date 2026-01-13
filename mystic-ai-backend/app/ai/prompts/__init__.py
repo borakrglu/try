@@ -12,6 +12,12 @@ from app.ai.prompts.chat_personas import (
     get_persona_prompt,
     get_system_context
 )
+from app.ai.prompts.journal_analysis import (
+    get_sentiment_analysis_prompt,
+    get_affirmation_prompt,
+    get_dream_interpretation_prompt,
+    get_mood_trend_analysis_prompt
+)
 
 __all__ = [
     "get_coffee_reading_prompt",
@@ -22,4 +28,8 @@ __all__ = [
     "get_astrologer_prompt",
     "get_persona_prompt",
     "get_system_context",
+    "get_sentiment_analysis_prompt",
+    "get_affirmation_prompt",
+    "get_dream_interpretation_prompt",
+    "get_mood_trend_analysis_prompt",
 ]

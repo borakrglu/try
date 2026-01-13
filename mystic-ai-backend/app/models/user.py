@@ -2,7 +2,7 @@
 User model
 """
 
-from sqlalchemy import Column, Integer, String, DateTime, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Enum as SQLEnum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
@@ -35,6 +35,11 @@ class User(Base):
     google_id = Column(String, unique=True, nullable=True, index=True)
     apple_id = Column(String, unique=True, nullable=True, index=True)
 
+    # Admin and moderation
+    is_admin = Column(Boolean, default=False, nullable=False, index=True)
+    is_banned = Column(Boolean, default=False, nullable=False, index=True)
+    ban_reason = Column(String(500), nullable=True)
+
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
@@ -46,6 +51,9 @@ class User(Base):
     journal_entries = relationship("JournalEntry", back_populates="user", cascade="all, delete-orphan")
     subscription = relationship("Subscription", back_populates="user", uselist=False, cascade="all, delete-orphan")
     stats = relationship("UserStats", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    notification_tokens = relationship("NotificationToken", back_populates="user", cascade="all, delete-orphan")
+    notification_history = relationship("NotificationHistory", back_populates="user", cascade="all, delete-orphan")
+    notification_preferences = relationship("NotificationPreferences", back_populates="user", uselist=False, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User(id={self.id}, email={self.email}, name={self.name})>"

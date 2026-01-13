@@ -8,6 +8,10 @@ from app.services.storage_service import StorageService
 from app.services.webhook_service import WebhookService
 from app.services.chat_service import ChatService
 from app.services.vector_memory import VectorMemoryService
+from app.services.journal_service import JournalService
+from app.services.moon_phase import MoonPhaseService
+from app.services.notification_service import NotificationService
+from app.services.admin_service import AdminService
 
 __all__ = [
     "AuthService",
@@ -16,4 +20,8 @@ __all__ = [
     "WebhookService",
     "ChatService",
     "VectorMemoryService",
+    "JournalService",
+    "MoonPhaseService",
+    "NotificationService",
+    "AdminService",
 ]
