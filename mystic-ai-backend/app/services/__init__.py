@@ -8,6 +8,7 @@ from app.services.storage_service import StorageService
 from app.services.webhook_service import WebhookService
 from app.services.chat_service import ChatService
 from app.services.vector_memory import VectorMemoryService
+from app.services.journal_service import JournalService
 
 __all__ = [
     "AuthService",
@@ -16,4 +17,5 @@ __all__ = [
     "WebhookService",
     "ChatService",
     "VectorMemoryService",
+    "JournalService",
 ]
