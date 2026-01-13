@@ -130,7 +130,7 @@ async def internal_error_handler(request: Request, exc):
 
 
 # Include API routers
-from app.api.v1 import auth, readings, upload, webhooks, chat, journal, astrology, notifications
+from app.api.v1 import auth, readings, upload, webhooks, chat, journal, astrology, notifications, admin
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(readings.router, prefix="/api/v1/readings", tags=["Readings"])
 app.include_router(upload.router, prefix="/api/v1/upload", tags=["Upload"])
@@ -139,6 +139,7 @@ app.include_router(chat.router, prefix="/api/v1/chat", tags=["Chat"])
 app.include_router(journal.router, prefix="/api/v1/journal", tags=["Journal"])
 app.include_router(astrology.router, prefix="/api/v1/astrology", tags=["Astrology"])
 app.include_router(notifications.router, prefix="/api/v1/notifications", tags=["Notifications"])
+app.include_router(admin.router, prefix="/api/v1/admin", tags=["Admin"])
 
 
 if __name__ == "__main__":

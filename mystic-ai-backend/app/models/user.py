@@ -2,7 +2,7 @@
 User model
 """
 
-from sqlalchemy import Column, Integer, String, DateTime, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Enum as SQLEnum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
@@ -34,6 +34,11 @@ class User(Base):
     # OAuth provider IDs
     google_id = Column(String, unique=True, nullable=True, index=True)
     apple_id = Column(String, unique=True, nullable=True, index=True)
+
+    # Admin and moderation
+    is_admin = Column(Boolean, default=False, nullable=False, index=True)
+    is_banned = Column(Boolean, default=False, nullable=False, index=True)
+    ban_reason = Column(String(500), nullable=True)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

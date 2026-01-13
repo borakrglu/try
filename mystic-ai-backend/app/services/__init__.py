@@ -11,6 +11,7 @@ from app.services.vector_memory import VectorMemoryService
 from app.services.journal_service import JournalService
 from app.services.moon_phase import MoonPhaseService
 from app.services.notification_service import NotificationService
+from app.services.admin_service import AdminService
 
 __all__ = [
     "AuthService",
@@ -22,4 +23,5 @@ __all__ = [
     "JournalService",
     "MoonPhaseService",
     "NotificationService",
+    "AdminService",
 ]

@@ -171,3 +171,62 @@ def check_chat_limit(
         )
 
     return current_user
+
+
+async def get_admin_user(
+    current_user: User = Depends(get_current_user)
+) -> User:
+    """
+    Require user to be an admin
+
+    Usage:
+        @app.get("/admin/users")
+        def list_users(admin: User = Depends(get_admin_user)):
+            return {"users": [...]}
+
+    Args:
+        current_user: Current authenticated user
+
+    Returns:
+        Admin user
+
+    Raises:
+        HTTPException: If user is not admin or is banned
+    """
+    if current_user.is_banned:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Account is banned: {current_user.ban_reason or 'No reason provided'}"
+        )
+
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+
+    return current_user
+
+
+async def check_not_banned(
+    current_user: User = Depends(get_current_user)
+) -> User:
+    """
+    Check if user is not banned
+
+    Args:
+        current_user: Current authenticated user
+
+    Returns:
+        User if not banned
+
+    Raises:
+        HTTPException: If user is banned
+    """
+    if current_user.is_banned:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Account is banned: {current_user.ban_reason or 'No reason provided'}"
+        )
+
+    return current_user
