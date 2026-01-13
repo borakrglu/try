@@ -46,6 +46,9 @@ class User(Base):
     journal_entries = relationship("JournalEntry", back_populates="user", cascade="all, delete-orphan")
     subscription = relationship("Subscription", back_populates="user", uselist=False, cascade="all, delete-orphan")
     stats = relationship("UserStats", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    notification_tokens = relationship("NotificationToken", back_populates="user", cascade="all, delete-orphan")
+    notification_history = relationship("NotificationHistory", back_populates="user", cascade="all, delete-orphan")
+    notification_preferences = relationship("NotificationPreferences", back_populates="user", uselist=False, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User(id={self.id}, email={self.email}, name={self.name})>"
