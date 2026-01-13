@@ -12,6 +12,7 @@ from app.services.journal_service import JournalService
 from app.services.moon_phase import MoonPhaseService
 from app.services.notification_service import NotificationService
 from app.services.admin_service import AdminService
+from app.services.analytics_service import AnalyticsService
 
 __all__ = [
     "AuthService",
@@ -24,4 +25,5 @@ __all__ = [
     "MoonPhaseService",
     "NotificationService",
     "AdminService",
+    "AnalyticsService",
 ]
