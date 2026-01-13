@@ -130,14 +130,14 @@ async def internal_error_handler(request: Request, exc):
 
 
 # Include API routers
-from app.api.v1 import auth, readings, upload, webhooks
+from app.api.v1 import auth, readings, upload, webhooks, chat
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(readings.router, prefix="/api/v1/readings", tags=["Readings"])
 app.include_router(upload.router, prefix="/api/v1/upload", tags=["Upload"])
 app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["Webhooks"])
+app.include_router(chat.router, prefix="/api/v1/chat", tags=["Chat"])
 
 # TODO: Add more routers as they're implemented
-# app.include_router(chat.router, prefix="/api/v1/chat", tags=["Chat"])
 # app.include_router(journal.router, prefix="/api/v1/journal", tags=["Journal"])
 
 
