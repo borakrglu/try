@@ -36,12 +36,18 @@ class Settings(BaseSettings):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    # OpenAI
+    # Google Gemini (FREE! - Preferred)
+    GEMINI_API_KEY: str = ""
+
+    # OpenAI (Paid - Fallback)
     OPENAI_API_KEY: str = ""
     OPENAI_ORG_ID: str = ""
 
-    # Anthropic
+    # Anthropic (Paid - Fallback)
     ANTHROPIC_API_KEY: str = ""
+
+    # AI Provider Selection
+    AI_PROVIDER: str = "gemini"  # Options: "gemini", "openai", "anthropic"
 
     # Pinecone
     PINECONE_API_KEY: str = ""

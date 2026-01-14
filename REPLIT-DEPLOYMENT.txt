@@ -52,10 +52,22 @@ Sol menüde "Tools" var (🔧 ikon)
 Her bir satırı AYRI AYRI ekle:
 
 ---
-Key: OPENAI_API_KEY
-Value: [BURAYA KENDİ OPENAI API KEY'İNİZİ YAPIŞTIRINIZ]
+Key: GEMINI_API_KEY
+Value: [BURAYA KENDİ GEMINI API KEY'İNİZİ YAPIŞTIRINIZ]
 (Add secret butonuna tıkla)
-(Not: API key'i daha önce size verdim, oradan kopyalayın)
+
+ÖNEMLI: Gemini API key nasıl alınır?
+1. https://makersuite.google.com/app/apikey adresine git
+2. Google hesabınla giriş yap
+3. "Create API Key" butonuna tıkla
+4. "Create API key in new project" seç
+5. Key'i kopyala ve buraya yapıştır
+6. TAMAMEN ÜCRETSİZ! Kredi kartı gerektirmez!
+
+---
+Key: AI_PROVIDER
+Value: gemini
+(Add secret butonuna tıkla)
 
 ---
 Key: SECRET_KEY

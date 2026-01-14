@@ -16,7 +16,7 @@ pydantic==2.5.3
 pydantic-settings==2.1.0
 
 # AI/ML
-openai==1.7.2
+google-generativeai==0.3.2  # Gemini AI (FREE!)
 pillow==10.2.0
 
 # HTTP Client
