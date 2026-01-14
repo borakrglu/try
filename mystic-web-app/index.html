@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Mystic.ai - Mistik Rehberlik Platformu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .card {
+            background: rgba(45, 27, 78, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="text-white">
+
+<div id="app" class="container mx-auto px-4 py-8 max-w-4xl">
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="card rounded-2xl p-8 max-w-md mx-auto">
+        <h1 class="text-5xl font-bold text-center mb-2">✨ Mystic.ai</h1>
+        <p class="text-purple-300 text-center mb-8">Mistik yolculuğunuza hoş geldiniz</p>
+
+        <div id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email"
+                class="w-full bg-purple-900/30 border border-purple-500/50 rounded-lg p-3 mb-4 text-white">
+            <input type="password" id="loginPassword" placeholder="Şifre"
+                class="w-full bg-purple-900/30 border border-purple-500/50 rounded-lg p-3 mb-6 text-white">
+            <button onclick="login()" class="btn-primary w-full text-white font-semibold py-3 rounded-lg mb-4">
+                Giriş Yap
+            </button>
+            <p class="text-center text-purple-300">
+                Hesabınız yok mu?
+                <button onclick="showRegister()" class="text-pink-400 font-semibold">Kayıt Ol</button>
+            </p>
+        </div>
+
+        <div id="registerForm" class="hidden">
+            <input type="text" id="registerName" placeholder="Ad Soyad"
+                class="w-full bg-purple-900/30 border border-purple-500/50 rounded-lg p-3 mb-4 text-white">
+            <input type="email" id="registerEmail" placeholder="Email"
+                class="w-full bg-purple-900/30 border border-purple-500/50 rounded-lg p-3 mb-4 text-white">
+            <input type="password" id="registerPassword" placeholder="Şifre"
+                class="w-full bg-purple-900/30 border border-purple-500/50 rounded-lg p-3 mb-6 text-white">
+            <button onclick="register()" class="btn-primary w-full text-white font-semibold py-3 rounded-lg mb-4">
+                Kayıt Ol
+            </button>
+            <p class="text-center text-purple-300">
+                Zaten hesabınız var mı?
+                <button onclick="showLogin()" class="text-pink-400 font-semibold">Giriş Yap</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="mainApp" class="hidden">
+
+        <!-- Navigation -->
+        <div class="card rounded-2xl p-4 mb-6 flex gap-2 overflow-x-auto">
+            <button onclick="showScreen('home')" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 whitespace-nowrap">
+                🏠 Ana Sayfa
+            </button>
+            <button onclick="showScreen('readings')" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 whitespace-nowrap">
+                🔮 Fallar
+            </button>
+            <button onclick="showScreen('chat')" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 whitespace-nowrap">
+                💬 Chat
+            </button>
+            <button onclick="showScreen('journal')" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 whitespace-nowrap">
+                📔 Günlük
+            </button>
+            <button onclick="showScreen('profile')" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 whitespace-nowrap">
+                👤 Profil
+            </button>
+        </div>
+
+        <!-- HOME SCREEN -->
+        <div id="homeScreen" class="screen">
+            <div class="card rounded-2xl p-6 mb-6">
+                <h2 class="text-3xl font-bold mb-2">
+                    Merhaba <span id="userName"></span>! ✨
+                </h2>
+                <p class="text-purple-300">Bugün hangi mistik bilgeliği arıyorsunuz?</p>
+            </div>
+
+            <div class="card rounded-2xl p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-4">💫 Günlük Affirmation</h3>
+                <p id="dailyAffirmation" class="text-purple-200 italic">Yükleniyor...</p>
+            </div>
+
+            <div class="card rounded-2xl p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-4">🌙 Ay Fazı</h3>
+                <div id="moonPhase" class="text-purple-200">Yükleniyor...</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="showScreen('coffeeReading')" class="card rounded-xl p-6 hover:bg-purple-900/50">
+                    <div class="text-5xl mb-2">☕</div>
+                    <div class="font-semibold">Kahve Falı</div>
+                </button>
+                <button onclick="showScreen('chat')" class="card rounded-xl p-6 hover:bg-purple-900/50">
+                    <div class="text-5xl mb-2">🧙</div>
+                    <div class="font-semibold">Bilge ile Chat</div>
+                </button>
+                <button onclick="showScreen('journal')" class="card rounded-xl p-6 hover:bg-purple-900/50">
+                    <div class="text-5xl mb-2">📔</div>
+                    <div class="font-semibold">Günlük Yaz</div>
+                </button>
+                <button onclick="showScreen('readings')" class="card rounded-xl p-6 hover:bg-purple-900/50">
+                    <div class="text-5xl mb-2">🔮</div>
+                    <div class="font-semibold">Tüm Fallar</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- READINGS SCREEN -->
+        <div id="readingsScreen" class="screen hidden">
+            <h2 class="text-3xl font-bold mb-6">🔮 Fallarınızı Seçin</h2>
+
+            <div class="grid gap-4">
+                <button onclick="showScreen('coffeeReading')" class="card rounded-xl p-6 text-left hover:bg-purple-900/50">
+                    <div class="text-4xl mb-2">☕</div>
+                    <h3 class="text-xl font-semibold mb-2">Kahve Falı</h3>
+                    <p class="text-purple-300">Antik kahve fincanı falı geleneği</p>
+                </button>
+
+                <div class="card rounded-xl p-6 text-left opacity-50">
+                    <div class="text-4xl mb-2">🃏</div>
+                    <h3 class="text-xl font-semibold mb-2">Tarot Falı</h3>
+                    <p class="text-purple-300">Mistik tarot kartları (Yakında)</p>
+                </div>
+
+                <div class="card rounded-xl p-6 text-left opacity-50">
+                    <div class="text-4xl mb-2">🤚</div>
+                    <h3 class="text-xl font-semibold mb-2">El Falı</h3>
+                    <p class="text-purple-300">Avucunuzdaki kader (Yakında)</p>
+                </div>
+
+                <div class="card rounded-xl p-6 text-left opacity-50">
+                    <div class="text-4xl mb-2">⭐</div>
+                    <h3 class="text-xl font-semibold mb-2">Astroloji</h3>
+                    <p class="text-purple-300">Yıldızlardan gelen mesajlar (Yakında)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- COFFEE READING SCREEN -->
+        <div id="coffeeReadingScreen" class="screen hidden">
+            <button onclick="showScreen('readings')" class="text-purple-300 mb-4">← Geri</button>
+
+            <div class="card rounded-2xl p-6 mb-6">
+                <h2 class="text-3xl font-bold mb-4">☕ Kahve Falı</h2>
+                <p class="text-purple-300 mb-6">Bir soru sorun, antik kahve falı sanatı size cevap versin</p>
+
+                <textarea id="coffeeQuestion" rows="4" placeholder="Aklınızda bir soru var mı?"
+                    class="w-full bg-purple-900/30 border border-purple-500/50 rounded-lg p-3 mb-4 text-white"></textarea>
+
+                <button onclick="getCoffeeReading()" class="btn-primary w-full text-white font-semibold py-3 rounded-lg">
+                    Falımı Bak
+                </button>
+            </div>
+
+            <div id="coffeeResult" class="card rounded-2xl p-6 hidden">
+                <h3 class="text-xl font-semibold mb-4">✨ Falınız</h3>
+                <div id="coffeeInterpretation" class="text-purple-200 mb-6"></div>
+                <button onclick="showScreen('coffeeReading'); document.getElementById('coffeeResult').classList.add('hidden')"
+                    class="btn-primary w-full text-white font-semibold py-2 rounded-lg">
+                    Yeni Fal Bak
+                </button>
+            </div>
+        </div>
+
+        <!-- CHAT SCREEN -->
+        <div id="chatScreen" class="screen hidden">
+            <div class="card rounded-2xl p-4 mb-4">
+                <div class="flex gap-2 overflow-x-auto">
+                    <button onclick="selectPersona('SAGE')" class="px-4 py-2 rounded-lg bg-purple-700 whitespace-nowrap">
+                        🧙 Bilge
+                    </button>
+                    <button onclick="selectPersona('WITCH')" class="px-4 py-2 rounded-lg bg-purple-600 whitespace-nowrap">
+                        🧹 Cadı
+                    </button>
+                    <button onclick="selectPersona('ASTROLOGER')" class="px-4 py-2 rounded-lg bg-purple-600 whitespace-nowrap">
+                        🔮 Astrolog
+                    </button>
+                </div>
+            </div>
+
+            <div class="card rounded-2xl p-6 mb-4 h-96 overflow-y-auto" id="chatMessages">
+                <p class="text-purple-300 text-center">Mesajlarınız burada görünecek...</p>
+            </div>
+
+            <div class="flex gap-2">
+                <input type="text" id="chatInput" placeholder="Bir şey sorun..."
+                    class="flex-1 bg-purple-900/50 border border-purple-500/50 rounded-lg p-3 text-white"
+                    onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()" class="btn-primary px-6 py-3 rounded-lg font-semibold">
+                    Gönder
+                </button>
+            </div>
+        </div>
+
+        <!-- JOURNAL SCREEN -->
+        <div id="journalScreen" class="screen hidden">
+            <h2 class="text-3xl font-bold mb-6">📔 Mistik Günlük</h2>
+
+            <div class="card rounded-2xl p-6 mb-6">
+                <p class="text-purple-300 mb-4">Düşüncelerinizi evrene dökün. AI duygularınızı ve çakralarınızı analiz edecek.</p>
+
+                <textarea id="journalContent" rows="8" placeholder="Bugün nasıl hissediyorsunuz? Aklınızda ne var?"
+                    class="w-full bg-purple-900/30 border border-purple-500/50 rounded-lg p-3 mb-4 text-white"></textarea>
+
+                <button onclick="saveJournalEntry()" class="btn-primary w-full text-white font-semibold py-3 rounded-lg">
+                    Kaydet & Analiz Et
+                </button>
+            </div>
+
+            <div id="journalEntries">
+                <h3 class="text-xl font-semibold mb-4">Geçmiş Kayıtlar</h3>
+                <p class="text-purple-300 text-center py-8">Henüz kayıt yok...</p>
+            </div>
+        </div>
+
+        <!-- PROFILE SCREEN -->
+        <div id="profileScreen" class="screen hidden">
+            <div class="card rounded-2xl p-6 mb-6 text-center">
+                <div class="w-24 h-24 rounded-full bg-purple-600 mx-auto mb-4 flex items-center justify-center text-4xl">
+                    <span id="userInitial">?</span>
+                </div>
+                <h2 class="text-2xl font-bold mb-2" id="profileName">Kullanıcı</h2>
+                <p class="text-purple-300" id="profileEmail">email@example.com</p>
+            </div>
+
+            <div class="card rounded-2xl p-4 mb-4">
+                <button class="w-full text-left py-3 px-4 hover:bg-purple-900/50 rounded-lg">
+                    ⚙️ Ayarlar
+                </button>
+                <button class="w-full text-left py-3 px-4 hover:bg-purple-900/50 rounded-lg">
+                    📊 İstatistiklerim
+                </button>
+                <button class="w-full text-left py-3 px-4 hover:bg-purple-900/50 rounded-lg">
+                    💎 Abonelik
+                </button>
+                <button class="w-full text-left py-3 px-4 hover:bg-purple-900/50 rounded-lg">
+                    ❓ Yardım
+                </button>
+            </div>
+
+            <button onclick="logout()" class="card rounded-2xl p-4 w-full text-left text-red-400 hover:bg-purple-900/50">
+                🚪 Çıkış Yap
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+// ===== CONFIG =====
+const API_URL = 'http://localhost:8000'; // Backend URL (değiştir!)
+
+let currentUser = null;
+let currentPersona = 'SAGE';
+let authToken = null;
+
+// ===== INIT =====
+window.onload = function() {
+    // Check if user is logged in
+    authToken = localStorage.getItem('authToken');
+    const userData = localStorage.getItem('userData');
+
+    if (authToken && userData) {
+        currentUser = JSON.parse(userData);
+        showMainApp();
+    }
+};
+
+// ===== AUTH =====
+function showLogin() {
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('registerForm').classList.add('hidden');
+}
+
+function showRegister() {
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('registerForm').classList.remove('hidden');
+}
+
+async function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+        alert('Lütfen tüm alanları doldurun!');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/api/v1/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (!response.ok) throw new Error('Giriş başarısız!');
+
+        const data = await response.json();
+        authToken = data.access_token;
+        currentUser = data.user;
+
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('userData', JSON.stringify(currentUser));
+
+        showMainApp();
+    } catch (error) {
+        alert('Giriş hatası: ' + error.message);
+    }
+}
+
+async function register() {
+    const name = document.getElementById('registerName').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+
+    if (!name || !email || !password) {
+        alert('Lütfen tüm alanları doldurun!');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/api/v1/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password, language: 'TURKISH' })
+        });
+
+        if (!response.ok) throw new Error('Kayıt başarısız!');
+
+        const data = await response.json();
+        authToken = data.access_token;
+        currentUser = data.user;
+
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('userData', JSON.stringify(currentUser));
+
+        showMainApp();
+    } catch (error) {
+        alert('Kayıt hatası: ' + error.message);
+    }
+}
+
+function logout() {
+    if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
+        authToken = null;
+        currentUser = null;
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+    }
+}
+
+function showMainApp() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('hidden');
+
+    document.getElementById('userName').textContent = currentUser.name;
+    document.getElementById('profileName').textContent = currentUser.name;
+    document.getElementById('profileEmail').textContent = currentUser.email;
+    document.getElementById('userInitial').textContent = currentUser.name[0].toUpperCase();
+
+    loadHomeData();
+}
+
+// ===== NAVIGATION =====
+function showScreen(screenName) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    document.getElementById(screenName + 'Screen').classList.remove('hidden');
+
+    if (screenName === 'home') loadHomeData();
+    if (screenName === 'chat') loadChatHistory();
+    if (screenName === 'journal') loadJournalEntries();
+}
+
+// ===== HOME =====
+async function loadHomeData() {
+    try {
+        // Daily affirmation
+        const affResponse = await fetch(`${API_URL}/api/v1/journal/affirmation`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (affResponse.ok) {
+            const affData = await affResponse.json();
+            document.getElementById('dailyAffirmation').textContent = affData.affirmation;
+        }
+
+        // Moon phase
+        const moonResponse = await fetch(`${API_URL}/api/v1/astrology/moon/current`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (moonResponse.ok) {
+            const moonData = await moonResponse.json();
+            document.getElementById('moonPhase').innerHTML = `
+                <div class="text-5xl mb-2">${moonData.phase_emoji}</div>
+                <div class="font-semibold text-xl mb-2">${moonData.phase_name}</div>
+                <div class="text-sm">${moonData.meaning}</div>
+            `;
+        }
+    } catch (error) {
+        console.error('Home data yüklenemedi:', error);
+    }
+}
+
+// ===== COFFEE READING =====
+async function getCoffeeReading() {
+    const question = document.getElementById('coffeeQuestion').value;
+
+    if (!question.trim()) {
+        alert('Lütfen bir soru girin!');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/api/v1/readings/coffee`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ question })
+        });
+
+        if (!response.ok) throw new Error('Fal alınamadı!');
+
+        const data = await response.json();
+        document.getElementById('coffeeInterpretation').textContent = data.interpretation;
+        document.getElementById('coffeeResult').classList.remove('hidden');
+        document.getElementById('coffeeQuestion').value = '';
+    } catch (error) {
+        alert('Hata: ' + error.message);
+    }
+}
+
+// ===== CHAT =====
+function selectPersona(persona) {
+    currentPersona = persona;
+    document.querySelectorAll('#chatScreen button').forEach(btn => {
+        btn.classList.remove('bg-purple-700');
+        btn.classList.add('bg-purple-600');
+    });
+    event.target.classList.remove('bg-purple-600');
+    event.target.classList.add('bg-purple-700');
+    loadChatHistory();
+}
+
+async function loadChatHistory() {
+    try {
+        const response = await fetch(`${API_URL}/api/v1/chat/history?persona=${currentPersona}&limit=20`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!response.ok) throw new Error('Chat geçmişi yüklenemedi!');
+
+        const data = await response.json();
+        const messagesDiv = document.getElementById('chatMessages');
+
+        if (data.messages && data.messages.length > 0) {
+            messagesDiv.innerHTML = data.messages.map(msg => `
+                <div class="mb-4 ${msg.role === 'user' ? 'text-right' : ''}">
+                    <div class="inline-block px-4 py-2 rounded-lg ${msg.role === 'user' ? 'bg-purple-600' : 'bg-purple-900/50'}">
+                        ${msg.content}
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            messagesDiv.innerHTML = '<p class="text-purple-300 text-center">Henüz mesaj yok...</p>';
+        }
+    } catch (error) {
+        console.error('Chat yüklenemedi:', error);
+    }
+}
+
+async function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    const messagesDiv = document.getElementById('chatMessages');
+
+    // Add user message
+    messagesDiv.innerHTML += `
+        <div class="mb-4 text-right">
+            <div class="inline-block px-4 py-2 rounded-lg bg-purple-600">
+                ${message}
+            </div>
+        </div>
+    `;
+
+    input.value = '';
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    try {
+        const response = await fetch(`${API_URL}/api/v1/chat/message`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ persona: currentPersona, content: message })
+        });
+
+        if (!response.ok) throw new Error('Mesaj gönderilemedi!');
+
+        const data = await response.json();
+
+        // Add AI response
+        messagesDiv.innerHTML += `
+            <div class="mb-4">
+                <div class="inline-block px-4 py-2 rounded-lg bg-purple-900/50">
+                    ${data.assistant_message.content}
+                </div>
+            </div>
+        `;
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    } catch (error) {
+        alert('Mesaj hatası: ' + error.message);
+    }
+}
+
+// ===== JOURNAL =====
+async function saveJournalEntry() {
+    const content = document.getElementById('journalContent').value;
+
+    if (!content.trim()) {
+        alert('Lütfen bir şeyler yazın!');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/api/v1/journal/entries`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content, entry_type: 'reflection' })
+        });
+
+        if (!response.ok) throw new Error('Günlük kaydedilemedi!');
+
+        alert('Günlüğünüz AI analizi ile kaydedildi! ✨');
+        document.getElementById('journalContent').value = '';
+        loadJournalEntries();
+    } catch (error) {
+        alert('Hata: ' + error.message);
+    }
+}
+
+async function loadJournalEntries() {
+    try {
+        const response = await fetch(`${API_URL}/api/v1/journal/entries?limit=10`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!response.ok) throw new Error('Günlükler yüklenemedi!');
+
+        const entries = await response.json();
+        const entriesDiv = document.getElementById('journalEntries');
+
+        if (entries.length > 0) {
+            entriesDiv.innerHTML = '<h3 class="text-xl font-semibold mb-4">Geçmiş Kayıtlar</h3>' +
+                entries.map(entry => `
+                    <div class="card rounded-xl p-4 mb-3">
+                        <div class="text-sm text-purple-400 mb-2">
+                            ${new Date(entry.created_at).toLocaleDateString('tr-TR')}
+                        </div>
+                        <div class="text-purple-200 mb-2">${entry.content.substring(0, 150)}...</div>
+                        ${entry.sentiment_analysis ? `
+                            <div class="text-sm text-purple-300">
+                                Ruh Hali: <span class="text-pink-400">${entry.sentiment_analysis.primary_emotion}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+        } else {
+            entriesDiv.innerHTML = '<h3 class="text-xl font-semibold mb-4">Geçmiş Kayıtlar</h3><p class="text-purple-300 text-center py-8">Henüz kayıt yok...</p>';
+        }
+    } catch (error) {
+        console.error('Günlükler yüklenemedi:', error);
+    }
+}
+</script>
+
+</body>
+</html>

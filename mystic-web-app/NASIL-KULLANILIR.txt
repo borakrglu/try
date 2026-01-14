@@ -1,0 +1,126 @@
+🌟 MYSTİC.AI WEB APP - KULLANIM KILAVUZU 🌟
+
+===========================================
+ÇOK BASİT! 3 ADIM:
+===========================================
+
+1️⃣ BACKEND'İ BAŞLAT (veya Railway'e koy)
+
+   Seçenek A - Lokal (kendi bilgisayarında):
+   - mystic-ai-backend klasörüne git
+   - Docker varsa: docker compose up -d
+   - Yoksa: Railway'e koy (Seçenek B)
+
+   Seçenek B - Railway (internette):
+   - https://railway.app → Giriş yap
+   - "New Project" → "Deploy from GitHub"
+   - borakrglu/try repo'sunu seç
+   - mystic-ai-backend klasörünü seç
+   - Environment variables ekle (OpenAI API key vs.)
+   - Deploy!
+   - Link gelir: https://your-app.railway.app
+
+
+2️⃣ INDEX.HTML'İ AÇ
+
+   - index.html dosyasını BUL
+   - SAĞ TIKLAYIP "Birlikte Aç" → Chrome/Edge seç
+   - VEYA dosyayı Chrome'a sürükle-bırak
+
+
+3️⃣ BACKEND URL'İNİ AYARLA
+
+   İlk açılışta hata alırsan:
+
+   - index.html'i NOT DEFTERI ile aç
+   - 10. satırı bul: const API_URL = 'http://localhost:8000';
+   - Değiştir:
+     * Lokal ise: http://localhost:8000 (değiştirme)
+     * Railway ise: https://your-app.railway.app
+   - Kaydet, tarayıcıda yenile (F5)
+
+
+===========================================
+KULLANIM:
+===========================================
+
+1. KAYIT OL veya GİRİŞ YAP
+   - Email ve şifre gir
+   - "Kayıt Ol" tıkla
+
+2. ANA SAYFA
+   - Günlük affirmation gör
+   - Ay fazını gör
+   - Hızlı erişim butonlarına tıkla
+
+3. KAHVE FALI
+   - Bir soru sor
+   - "Falımı Bak" tıkla
+   - AI yorumunu oku!
+
+4. CHAT
+   - 3 kişilik seç (Bilge/Cadı/Astrolog)
+   - Mesaj yaz
+   - Gönder!
+
+5. GÜNLÜK
+   - Duygularını yaz
+   - "Kaydet & Analiz Et" tıkla
+   - AI duygu analizini gör
+
+6. PROFİL
+   - Bilgilerini gör
+   - Çıkış yap
+
+
+===========================================
+SORUN ÇÖZME:
+===========================================
+
+❌ "Failed to fetch" hatası:
+   → Backend çalışmıyor
+   → Backend URL'ini kontrol et
+
+❌ "Unauthorized" hatası:
+   → Tekrar giriş yap
+
+❌ Hiçbir şey görünmüyor:
+   → F12 bas → Console'a bak → Hatayı oku
+
+❌ Backend'e bağlanamıyor:
+   → Backend URL doğru mu?
+   → Backend çalışıyor mu? (tarayıcıda /health aç)
+
+
+===========================================
+ÖNEMLİ:
+===========================================
+
+✅ Tek dosya! Kurulum YOK!
+✅ Tüm modern tarayıcılarda çalışır
+✅ İnternet bağlantısı gerekli (API için)
+✅ Backend olmadan çalışmaz (backend lazım!)
+
+
+===========================================
+BACKEND DEPLOY (Railway):
+===========================================
+
+1. https://railway.app
+2. GitHub ile giriş yap
+3. New Project → Deploy from GitHub
+4. borakrglu/try seç
+5. Root directory: mystic-ai-backend
+6. Environment Variables ekle:
+   - OPENAI_API_KEY = sk-your-key
+   - SECRET_KEY = your-secret
+   - DATABASE_URL = (otomatik)
+7. PostgreSQL database ekle (New → PostgreSQL)
+8. Deploy!
+9. Link al (Settings → Generate Domain)
+10. index.html'de API_URL'i değiştir
+
+
+===========================================
+İYİ EĞLENCELER! ✨🔮
+===========================================
