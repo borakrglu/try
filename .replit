@@ -1,0 +1,10 @@
+run = "cd mystic-ai-backend && chmod +x start-replit.sh && ./start-replit.sh"
+language = "python3"
+entrypoint = "mystic-ai-backend/app/main.py"
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+run = ["sh", "-c", "cd mystic-ai-backend && chmod +x start-replit.sh && ./start-replit.sh"]
+deploymentTarget = "cloudrun"
