@@ -1,4 +1,4 @@
-run = "cd mystic-ai-backend && pip install -q -r requirements-replit.txt && python3 run.py"
+run = "cd mystic-ai-backend && python3 -m pip install -q -r requirements-replit.txt && python3 run.py"
 language = "python3"
 entrypoint = "mystic-ai-backend/run.py"
 
@@ -6,5 +6,5 @@ entrypoint = "mystic-ai-backend/run.py"
 channel = "stable-23_11"
 
 [deployment]
-run = ["sh", "-c", "cd mystic-ai-backend && pip install -q -r requirements-replit.txt && python3 run.py"]
+run = ["sh", "-c", "cd mystic-ai-backend && python3 -m pip install -q -r requirements-replit.txt && python3 run.py"]
 deploymentTarget = "cloudrun"
