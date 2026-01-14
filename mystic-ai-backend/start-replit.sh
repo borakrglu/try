@@ -4,13 +4,8 @@ echo "🌟 Starting Mystic.ai Backend on Replit..."
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-pip install -r requirements-replit.txt
+pip install -q -r requirements-replit.txt
 
-# Run database migrations (with SQLite)
-echo "🗄️  Running database migrations..."
-export DATABASE_URL="sqlite:///./mystic.db"
-alembic upgrade head
-
-# Start the server
+# Start the server (skip migrations for now - will create tables automatically)
 echo "🚀 Starting FastAPI server..."
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
