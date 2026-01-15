@@ -27,7 +27,7 @@ class UserCreate(UserBase):
 # Schema for OAuth registration (no password)
 class UserCreateOAuth(UserBase):
     """Schema for OAuth user creation"""
-    provider: str = Field(..., regex="^(google|apple)$")
+    provider: str = Field(..., pattern="^(google|apple)$")
     provider_id: str
     birth_date: Optional[datetime] = None
 
