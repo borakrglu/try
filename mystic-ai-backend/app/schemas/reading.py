@@ -41,6 +41,24 @@ class TarotReadingCreate(BaseModel):
         }
 
 
+class TarotCard(BaseModel):
+    """Schema for a tarot card in a reading"""
+    card_name: str = Field(..., description="Name of the tarot card")
+    position: str = Field(..., description="Position in the spread (e.g., 'past', 'present', 'future')")
+    reversed: bool = Field(default=False, description="Whether the card is reversed")
+    meaning: str = Field(..., description="Interpretation of the card in this position")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "card_name": "The Fool",
+                "position": "present",
+                "reversed": False,
+                "meaning": "New beginnings and taking a leap of faith"
+            }
+        }
+
+
 # Palm Reading Schemas
 class PalmReadingCreate(BaseModel):
     """Schema for creating a palm reading"""
