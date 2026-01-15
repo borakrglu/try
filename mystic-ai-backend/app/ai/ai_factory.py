@@ -40,10 +40,13 @@ class AIFactory:
                     cls._text_service_instance = GeminiService()
                     logger.info("✅ Using Gemini AI (FREE!) for text generation")
                 except Exception as e:
-                    logger.warning(f"Failed to initialize Gemini: {e}. Falling back to OpenAI.")
-                    from app.ai.ai_service import AIService
-                    cls._text_service_instance = AIService()
-                    logger.info("Using OpenAI GPT-4 for text generation (fallback)")
+                    logger.error(f"Failed to initialize Gemini: {e}")
+                    try:
+                        from app.ai.ai_service import AIService
+                        cls._text_service_instance = AIService()
+                        logger.info("Using OpenAI GPT-4 for text generation (fallback)")
+                    except ImportError:
+                        raise RuntimeError("Neither Gemini nor OpenAI are available. Install google-generativeai or openai package.")
 
             elif provider == "openai":
                 from app.ai.ai_service import AIService
@@ -75,10 +78,13 @@ class AIFactory:
                     cls._vision_service_instance = GeminiVisionService()
                     logger.info("✅ Using Gemini Vision (FREE!) for image analysis")
                 except Exception as e:
-                    logger.warning(f"Failed to initialize Gemini Vision: {e}. Falling back to OpenAI.")
-                    from app.ai.vision_service import VisionService
-                    cls._vision_service_instance = VisionService()
-                    logger.info("Using OpenAI GPT-4 Vision for image analysis (fallback)")
+                    logger.error(f"Failed to initialize Gemini Vision: {e}")
+                    try:
+                        from app.ai.vision_service import VisionService
+                        cls._vision_service_instance = VisionService()
+                        logger.info("Using OpenAI GPT-4 Vision for image analysis (fallback)")
+                    except ImportError:
+                        raise RuntimeError("Neither Gemini Vision nor OpenAI Vision are available. Install google-generativeai or openai package.")
 
             elif provider == "openai":
                 from app.ai.vision_service import VisionService

@@ -10,8 +10,7 @@ from datetime import datetime
 from app.models.reading import Reading, ReadingImage, ReadingType
 from app.models.user import User
 from app.schemas.reading import ReadingResponse
-from app.ai.vision_service import VisionService
-from app.ai.ai_service import AIService
+from app.ai.ai_factory import AIFactory
 from app.ai.tarot_cards import get_random_cards
 from app.ai.tarot_spreads import SpreadType
 
@@ -23,8 +22,8 @@ class ReadingService:
 
     def __init__(self, db: Session):
         self.db = db
-        self.vision_service = VisionService()
-        self.ai_service = AIService()
+        self.vision_service = AIFactory.get_vision_service()
+        self.ai_service = AIFactory.get_text_service()
 
     async def create_coffee_reading(
         self,
