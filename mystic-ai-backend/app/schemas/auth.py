@@ -26,7 +26,7 @@ class LoginResponse(BaseModel):
 # OAuth login
 class OAuthLoginRequest(BaseModel):
     """Schema for OAuth login (Google, Apple)"""
-    provider: str = Field(..., regex="^(google|apple)$")
+    provider: str = Field(..., pattern="^(google|apple)$")
     id_token: str  # JWT token from OAuth provider
 
 

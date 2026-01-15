@@ -45,7 +45,7 @@ class TarotReadingCreate(BaseModel):
 class PalmReadingCreate(BaseModel):
     """Schema for creating a palm reading"""
     hand_image_url: HttpUrl
-    hand_type: str = Field(..., regex="^(left|right)$")
+    hand_type: str = Field(..., pattern="^(left|right)$")
 
 
 # Generic Reading Response

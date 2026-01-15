@@ -43,6 +43,6 @@ class ChatHistoryResponse(BaseModel):
 # Streaming response (for WebSocket)
 class ChatStreamChunk(BaseModel):
     """Schema for streaming chat response chunks"""
-    type: str = Field(..., regex="^(chunk|done|error)$")
+    type: str = Field(..., pattern="^(chunk|done|error)$")
     content: Optional[str] = None
     error: Optional[str] = None

@@ -45,8 +45,8 @@ class NotificationPreferencesUpdate(BaseModel):
     new_feature: Optional[bool] = None
     subscription_expiry: Optional[bool] = None
     quiet_hours_enabled: Optional[bool] = None
-    quiet_hours_start: Optional[str] = Field(None, regex=r"^([01]\d|2[0-3]):[0-5]\d$")
-    quiet_hours_end: Optional[str] = Field(None, regex=r"^([01]\d|2[0-3]):[0-5]\d$")
+    quiet_hours_start: Optional[str] = Field(None, pattern=r"^([01]\d|2[0-3]):[0-5]\d$")
+    quiet_hours_end: Optional[str] = Field(None, pattern=r"^([01]\d|2[0-3]):[0-5]\d$")
 
 
 class NotificationPreferencesResponse(BaseModel):

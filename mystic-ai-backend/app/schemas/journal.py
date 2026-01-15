@@ -11,7 +11,7 @@ from typing import Optional, List, Dict, Any
 class JournalEntryCreate(BaseModel):
     """Schema for creating a journal entry"""
     content: str = Field(..., min_length=1, max_length=10000)
-    entry_type: str = Field(default="journal", regex="^(journal|dream|gratitude)$")
+    entry_type: str = Field(default="journal", pattern="^(journal|dream|gratitude)$")
     mood: Optional[str] = Field(None, max_length=50)
     tags: Optional[List[str]] = None
 
