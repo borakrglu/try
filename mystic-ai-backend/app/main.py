@@ -10,18 +10,21 @@ from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-import sentry_sdk
 from contextlib import asynccontextmanager
 
 from app.config import settings
 
-# Initialize Sentry for error tracking
-if settings.SENTRY_DSN:
-    sentry_sdk.init(
-        dsn=settings.SENTRY_DSN,
-        environment=settings.APP_ENV,
-        traces_sample_rate=0.1 if settings.APP_ENV == "production" else 1.0,
-    )
+# Initialize Sentry for error tracking (optional)
+try:
+    import sentry_sdk
+    if settings.SENTRY_DSN:
+        sentry_sdk.init(
+            dsn=settings.SENTRY_DSN,
+            environment=settings.APP_ENV,
+            traces_sample_rate=0.1 if settings.APP_ENV == "production" else 1.0,
+        )
+except ImportError:
+    pass  # Sentry not installed, skip error tracking
 
 # Rate limiter
 limiter = Limiter(key_func=get_remote_address)
